@@ -3,6 +3,14 @@ import ctypes
 import os
 
 
+def initialize_font_path(desired_font: str):
+    for root, dirs, files in os.walk("C:\\"):
+        for name in files:
+            if name == desired_font:
+                return os.path.abspath(os.path.join(root, name))
+    raise FileNotFoundError
+
+
 def display_title_page(display, font_path, colour_palette: dict):
     display_ratio = display.get_width() / display.get_height()
 
@@ -45,22 +53,7 @@ def primary():
     else:
         screen_height = (2/3) * monitor_height
 
-    font_path = None
-    font_path_break = False
-    for root, dirs, files in os.walk("C:\\"):
-        if font_path_break:
-            break
-
-        for name in files:
-            if font_path_break:
-                break
-
-            if name == "FFFFORWARD.TTF":
-                font_path = os.path.abspath(os.path.join(root, name))
-                font_path_break = True
-
-    if not font_path_break:
-        raise FileNotFoundError
+    font_path = initialize_font_path("FFFFORWARD.TTF")
 
     colour_palette = {
         "red": (),
