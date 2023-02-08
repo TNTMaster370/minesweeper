@@ -1,6 +1,6 @@
+from initialize import initialize_display_size, initialize_font_path
+
 import pygame
-import ctypes
-import os
 
 
 class DifficultyButton:
@@ -68,14 +68,6 @@ class DifficultyButton:
     @property
     def text_name(self):
         return self._text_name
-
-
-def initialize_font_path(desired_font: str):
-    for root, dirs, files in os.walk("C:\\"):
-        for name in files:
-            if name == desired_font:
-                return os.path.abspath(os.path.join(root, name))
-    raise FileNotFoundError
 
 
 def draw_text(text: str, x_coordinate: int, y_coordinate: int, colour: tuple, font_path: str, size: int):
@@ -159,19 +151,8 @@ def display_difficulty_page(display, font_path, colour_palette: dict):
 
 
 def primary():
-    user_screen = ctypes.windll.user32
-    monitor_width = user_screen.GetSystemMetrics(0)
-    monitor_height = user_screen.GetSystemMetrics(1)
-
-    screen_width = (1 / 2) * monitor_width
-    if screen_width < (4 / 5) * monitor_height:
-        # screen_height = screen_width
-        screen_height = 300
-    else:
-        screen_height = (2 / 3) * monitor_height
-
+    screen_width, screen_height = initialize_display_size()
     font_path = initialize_font_path("FFFFORWARD.TTF")
-    # screen_width = 1000  # Temporary declaration for testing scale.
 
     colour_palette = {
         "red":       (245, 65,  65),
