@@ -1,19 +1,6 @@
 import ctypes
 import os
 
-'''
-def primary():
-    user_screen = ctypes.windll.user32
-    monitor_width = user_screen.GetSystemMetrics(0)
-    monitor_height = user_screen.GetSystemMetrics(1)
-
-    screen_width = (1 / 2) * monitor_width
-    if screen_width < (4 / 5) * monitor_height:
-        # screen_height = screen_width
-        screen_height = 300
-    else:
-        screen_height = (2 / 3) * monitor_height'''
-
 
 def initialize_display_size():
     user_screen = ctypes.windll.user32
