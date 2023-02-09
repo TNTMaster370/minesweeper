@@ -34,8 +34,9 @@ def display_title_page(display, font_path, colour_palette: dict):
             return True
 
 
-def display_difficulty_page(display, font_path, colour_palette: dict):
+def display_difficulty_page(display, font_path, colour_palette: dict, difficulty_list: dict):
     display.fill(colour_palette["dark gray"])
+    difficulty_button_series = []
     rectangle_gap = int((1 / 25) * display.get_width())
 
     dual_row = 0
@@ -49,16 +50,20 @@ def display_difficulty_page(display, font_path, colour_palette: dict):
     dual_row_x = (1 - dual_row) * (2 * rectangle_width + 2 * rectangle_gap)
     dual_row_y = dual_row * (rectangle_height + rectangle_gap)
 
-    difficulty_button_series = [
-        DifficultyButton(rectangle_gap, rectangle_gap, rectangle_width, rectangle_height, font_path, "Easy", "9 x 9",
-                         "10 mines", bool(dual_row)),
-        DifficultyButton(rectangle_width + 2 * rectangle_gap, rectangle_gap, rectangle_width, rectangle_height,
-                         font_path, "Medium", "16 x 16", "40 mines", bool(dual_row)),
-        DifficultyButton(dual_row_x + rectangle_gap, dual_row_y + rectangle_gap, rectangle_width, rectangle_height,
-                         font_path, "Hard", "30 x 16", "99 mines", bool(dual_row)),
-        DifficultyButton(dual_row_x + rectangle_width + 2 * rectangle_gap, dual_row_y + rectangle_gap, rectangle_width,
-                         rectangle_height, font_path, "Extreme", "30 x 24", "180 mines", bool(dual_row))
+    x_list = [
+        rectangle_gap, (rectangle_width + 2*rectangle_gap), (dual_row_x + rectangle_gap),
+        (dual_row_x + rectangle_width + 2*rectangle_gap)
     ]
+    y_list = [
+        rectangle_gap, rectangle_gap, (dual_row_y + rectangle_gap), (dual_row_y + rectangle_gap)
+    ]
+
+    for index, key in enumerate(difficulty_list):
+        difficulty_button_series.append(
+            DifficultyButton(x_list[index], y_list[index], rectangle_width, rectangle_height, font_path,
+                             key, f"{difficulty_list[key][0]} x {difficulty_list[key][1]}",
+                             f"{difficulty_list[key][2]} mines", bool(dual_row))
+        )
 
     while True:
         for rectangle in difficulty_button_series:
