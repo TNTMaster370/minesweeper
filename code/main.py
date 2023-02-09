@@ -9,14 +9,13 @@ def run_game_sequence(display, clock):
     colour_palette = initialize_colour_palette()
     difficulty_list = initialize_difficulty_list()
     font_path = initialize_font_path("FFFFORWARD.TTF")
-    quit = False
 
-    quit = display_title_page(display, font_path, colour_palette)
-    if quit:
+    quit_game = display_title_page(display, font_path, colour_palette)
+    if quit_game:
         return
 
-    difficulty = display_difficulty_page(display, font_path, colour_palette, difficulty_list)
-    if difficulty == "QUIT":
+    quit_game, difficulty = display_difficulty_page(display, font_path, colour_palette, difficulty_list)
+    if quit_game:
         return
 
     print(difficulty)
