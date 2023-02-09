@@ -4,15 +4,19 @@ import os
 
 def initialize_colour_palette():
     return {
-        "red":       (245, 65,  65),
-        "orange":    (),
-        "yellow":    (),
-        "green":     (),
-        "blue":      (),
-        "purple":    (),
-        "white":     (255, 255, 255),
-        "dark gray": (63,  63,  63),
-        "black":     (0,   0,   0)
+        "red":        (245, 65,  65),   # 3
+        "orange":     (255, 163, 23),   # 7
+        "yellow":     (240, 65,  65),   # 5
+        "green":      (52,  170, 0),    # 2
+        "cyan":       (0,   209, 209),  # 6
+        "blue":       (0,   146, 227),  # 1
+        "purple":     (165, 102, 247),  # 4
+        "magenta":    (239, 85,  224),  # 8
+        "brown":      (144, 95,  95),   # flags
+        "white":      (255, 255, 255),
+        "light gray": (234, 234, 234),  # mines
+        "dark gray":  (63,  63,  63),   # bg
+        "black":      (0,   0,   0)
     }
 
 
