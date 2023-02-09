@@ -1,4 +1,5 @@
-from initialize import initialize_display_size, initialize_font_path
+from initialize import initialize_colour_palette, initialize_difficulty_list, initialize_display_size, \
+    initialize_font_path
 from display import display_title_page, display_difficulty_page
 
 import pygame
@@ -7,25 +8,8 @@ import pygame
 def primary():
     screen_width, screen_height = initialize_display_size()
     font_path = initialize_font_path("FFFFORWARD.TTF")
-
-    colour_palette = {
-        "red":       (245, 65,  65),
-        "orange":    (),
-        "yellow":    (),
-        "green":     (),
-        "blue":      (),
-        "purple":    (),
-        "white":     (255, 255, 255),
-        "dark gray": (63,  63,  63),
-        "black":     (0,   0,   0)
-    }
-
-    difficulty_list = {
-        "Easy":    (9,  9,  10),
-        "Medium":  (16, 16, 40),
-        "Hard":    (30, 16, 99),
-        "Extreme": (30, 24, 180)
-    }
+    colour_palette = initialize_colour_palette()
+    difficulty_list = initialize_difficulty_list()
 
     quit = False
 
