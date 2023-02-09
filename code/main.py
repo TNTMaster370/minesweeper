@@ -5,7 +5,7 @@ from display import display_title_page, display_difficulty_page
 import pygame
 
 
-def run_game_sequence(display):
+def run_game_sequence(display, clock):
     colour_palette = initialize_colour_palette()
     difficulty_list = initialize_difficulty_list()
     font_path = initialize_font_path("FFFFORWARD.TTF")
@@ -29,7 +29,7 @@ def primary():
     display = pygame.display.set_mode((screen_width, screen_height))
     clock = pygame.time.Clock()
 
-    run_game_sequence(display)
+    run_game_sequence(display, clock)
     pygame.quit()
 
 
