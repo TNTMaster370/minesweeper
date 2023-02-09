@@ -6,7 +6,9 @@ def initialize_colour_palette():
     return {
         "red":        (245, 65,  65),   # 3
         "orange":     (255, 163, 23),   # 7
-        "yellow":     (240, 65,  65),   # 5
+        "gold":       (240, 191, 57),   # hidden tile, highlighted
+        "husk":       (180, 157, 71),   # revealed tile, highlighted
+        "yellow":     (240, 234, 57),   # 5
         "green":      (52,  170, 0),    # 2
         "cyan":       (0,   209, 209),  # 6
         "blue":       (0,   146, 227),  # 1
@@ -15,7 +17,8 @@ def initialize_colour_palette():
         "brown":      (144, 95,  95),   # flags
         "white":      (255, 255, 255),
         "light gray": (234, 234, 234),  # mines
-        "dark gray":  (63,  63,  63),   # bg
+        "mid gray":   (184, 184, 184),  # revealed tile
+        "dark gray":  (63,  63,  63),   # bg, hidden tile
         "black":      (0,   0,   0)
     }
 
