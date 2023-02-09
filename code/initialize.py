@@ -2,6 +2,29 @@ import ctypes
 import os
 
 
+def initialize_colour_palette():
+    return {
+        "red":       (245, 65,  65),
+        "orange":    (),
+        "yellow":    (),
+        "green":     (),
+        "blue":      (),
+        "purple":    (),
+        "white":     (255, 255, 255),
+        "dark gray": (63,  63,  63),
+        "black":     (0,   0,   0)
+    }
+
+
+def initialize_difficulty_list():
+    return {
+        "Easy":    (9,  9,  10),
+        "Medium":  (16, 16, 40),
+        "Hard":    (30, 16, 99),
+        "Extreme": (30, 24, 180)
+    }
+
+
 def initialize_display_size():
     user_screen = ctypes.windll.user32
     monitor_width = user_screen.GetSystemMetrics(0)
