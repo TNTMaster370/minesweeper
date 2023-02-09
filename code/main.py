@@ -21,7 +21,7 @@ def primary():
     if quit:
         return
 
-    difficulty = display_difficulty_page(display, font_path, colour_palette)
+    difficulty = display_difficulty_page(display, font_path, colour_palette, difficulty_list)
     if difficulty == "QUIT":
         return
 
