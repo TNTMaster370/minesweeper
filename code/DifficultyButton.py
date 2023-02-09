@@ -14,7 +14,9 @@ class DifficultyButton:
         self._text_name = text_name
         self._text_dimensions = text_dimensions
         self._text_mines = text_mines
-        self._subtext_single_row = subtext_single_row
+        self._subtext_single_row = subtext_single_row  # subtext_single_row is a boolean for whether the subtext
+        # of the button ("X x Y" and "Z mines") are parallel to each other, or are drawn on different lines with
+        # separate y-coordinates. True means that the two texts are on the same y-coordinate.
 
     def draw_rectangle(self, display, colour_palette: dict):
         pygame.draw.rect(display, colour_palette["white"],
@@ -32,30 +34,35 @@ class DifficultyButton:
                                           int((10 / 36) * self._width / (int(len(self._text_name) / 4) + 1)))
         display.blit(text, text_boundaries)
 
-        k = len(self._text_mines)
+        text_length = len(self._text_mines)
         if self._subtext_single_row:
-            k += len(self._text_dimensions)
-            x_u = int(((3 * self._width * k) - (6 * self._width)) / (8 * k)) + self._x_coordinate - (
-                        (1 / 10) * self._width)
-            text_x = x_u
+            text_length += len(self._text_dimensions)
+            text_x = int((((7*self._width*text_length) + (24*self._width)) / (40*text_length)) + self._x_coordinate)
+            #           7wt + 24w       ; where w is the width, t is the length of the text, and
+            # text_x =  --------- + x'  ; x' is the x-coordinate of the top-left corner of the
+            #              40t          ; rectangle being drawn on. Equation is rounded down to
+            #                           ; the ones place.
 
-        text_y = int(self._height // (1.35 + (2.5*dual_row_multiplier))) + self._y_coordinate
-        text_size = int((16 / 36) * self._width / (int(k / 2) + 1))
+        text_y = int(self._height // (1.35 + (2.5 * dual_row_multiplier))) + self._y_coordinate
+        text_size = int((16 / 36) * self._width / (int(text_length / 2) + 1))
 
-        text, text_boundaries = draw_text(self._text_dimensions, text_x, text_y, colour_palette["white"], self._font_path,
+        text, text_boundaries = draw_text(self._text_dimensions, text_x, text_y, colour_palette["white"],
+                                          self._font_path,
                                           text_size)
         display.blit(text, text_boundaries)
 
         if self._subtext_single_row:
-            x_v = int(((18 * self._width) + (11 * self._width * k)) / (24 * k)) + self._x_coordinate + (
-                        (1 / 5) * self._width)
-            text_x = x_v
+            text_x = (((79*text_length*self._width) + (90*self._width)) / (120*text_length)) + self._x_coordinate
+            #          79tw + 90w       ; where x is the width, t is the length of the text, and
+            # text_x = ---------- + x'  ; x' is the x-coordinate of the top-left corner of the
+            #             120t          ; rectangle being drawn on. Equation is rounded down to
+            #                           ; the ones place.
 
-        text_y = int(self._height // (1.35 - (1.5*dual_row_multiplier))) + self._y_coordinate
+        text_y = int(self._height // (1.35 - (1.5 * dual_row_multiplier))) + self._y_coordinate
+
         text, text_boundaries = draw_text(self._text_mines, text_x, text_y, colour_palette["white"], self._font_path,
                                           text_size)
         display.blit(text, text_boundaries)
-        # '''
 
     def collision(self, click_x: int, click_y: int):
         if click_x < self._x_coordinate or click_x > (self._x_coordinate + self._width):
