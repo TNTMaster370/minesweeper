@@ -76,6 +76,6 @@ def display_difficulty_page(display, font_path, colour_palette: dict, difficulty
         if event.type == pygame.MOUSEBUTTONDOWN:
             for rectangle in difficulty_button_series:
                 if rectangle.collision(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
-                    return rectangle.text_name
+                    return False, rectangle.text_name
         if event.type == pygame.QUIT:
-            return "QUIT"
+            return True, ""
