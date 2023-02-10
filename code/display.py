@@ -1,5 +1,6 @@
 from DifficultyButton import DifficultyButton
 from draw import draw_text
+from MineGrid import MineGrid
 
 import pygame
 
@@ -79,3 +80,29 @@ def display_difficulty_page(display, font_path, colour_palette: dict, difficulty
                     return False, rectangle.text_name
         if event.type == pygame.QUIT:
             return True, ""
+
+
+def display_game_page(display, clock, font_path, colour_palette: dict, difficulty_list: dict, difficulty: str):
+    display.fill(colour_palette["dark gray"])
+
+    grid = MineGrid(display, difficulty_list[difficulty][0], difficulty_list[difficulty][1], difficulty_list[difficulty][2])
+
+    while True:
+        grid.draw_grid(display, clock, font_path, colour_palette)
+        pygame.display.update()
+
+        event = pygame.event.wait()
+
+        if event.type == pygame.K_r:
+            grid = MineGrid(display, difficulty_list[difficulty][0], difficulty_list[difficulty][1],
+                            difficulty_list[difficulty][2])
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            click_x, click_y = grid.collision(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+            if click_x == -1 or click_y == -1:
+                continue
+            if pygame.mouse.get_pressed(num_buttons=3) == (1, 0, 0):
+                grid.reveal_square(click_x, click_y)
+            elif pygame.mouse.get_pressed(num_buttons=3) == (0, 0, 1):
+                grid.flag_square(click_x, click_y)
+        if event.type == pygame.QUIT:
+            return True
