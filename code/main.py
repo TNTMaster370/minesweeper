@@ -18,8 +18,6 @@ def run_game_sequence(display, clock):
     if quit_game:
         return
 
-    print(difficulty)
-
 
 def primary():
     screen_width, screen_height = initialize_display_size()
