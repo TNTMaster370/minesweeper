@@ -1,6 +1,6 @@
 from initialize import initialize_colour_palette, initialize_difficulty_list, initialize_display_size, \
     initialize_font_path
-from display import display_title_page, display_difficulty_page
+from display import display_title_page, display_difficulty_page, display_game_page
 
 import pygame
 
@@ -15,6 +15,10 @@ def run_game_sequence(display, clock):
         return
 
     quit_game, difficulty = display_difficulty_page(display, font_path, colour_palette, difficulty_list)
+    if quit_game:
+        return
+
+    quit_game = display_game_page(display, clock, font_path, colour_palette, difficulty_list, difficulty)
     if quit_game:
         return
 
