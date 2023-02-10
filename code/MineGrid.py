@@ -27,14 +27,26 @@ def _generate_grid(length: int, height: int, mine_count: int, mine_positioning: 
             if grid_answer[x][y] == "X":
                 continue
 
-            for z in range(8):
+            for z in mine_positioning:
                 try:
-                    x_ = mine_positioning[z][0]
-                    y_ = mine_positioning[z][1]
-                    if grid_answer[x+x_][y+y_] == "X":
+                    if grid_answer[x+z[0]][y+z[1]] == "X":
                         grid_answer[x][y] += 1
                 except IndexError:
-                    continue
+                    pass
+
+    return grid_visual, grid_answer
+
+
+def _reveal_zeroes(grid_visual, grid_answer, mine_position, x: int, y: int):
+    for pos_x, pos_y in mine_position:
+        try:
+            if grid_visual[x+pos_x][y+pos_y] != "#":
+                continue
+            grid_visual[x + pos_x][y + pos_y] = grid_answer[x + pos_x][y + pos_y]
+            if grid_visual[x+pos_x][y+pos_y] == 0:
+                grid_visual, grid_answer = _reveal_zeroes(grid_visual, grid_answer, mine_position, x+pos_x, y+pos_y)
+        except IndexError:
+            continue
 
     return grid_visual, grid_answer
 
@@ -70,12 +82,14 @@ class MineGrid:
                     pygame.draw.rect(display, colour_palette["mid-dark gray"],
                                      [x*self._tile_size+self._offset[0], y*self._tile_size+self._offset[1], self._tile_size, self._tile_size])
                     pygame.draw.rect(display, colour_palette["white"],
-                                     [x*self._tile_size+self._offset[0], y*self._tile_size+self._offset[1], self._tile_size, self._tile_size])
+                                     [x*self._tile_size+self._offset[0], y*self._tile_size+self._offset[1], self._tile_size, self._tile_size], 2)
                 else:
                     pygame.draw.rect(display, colour_palette["mid gray"],
                                      [x*self._tile_size+self._offset[0], y*self._tile_size+self._offset[1], self._tile_size, self._tile_size])
 
-                if self._grid_visual[x][y] == (0 or "#"):
+                if self._grid_visual[x][y] == "#":
+                    continue
+                if self._grid_visual[x][y] == 0:
                     continue
 
                 if self._grid_visual[x][y] == "X":
@@ -105,13 +119,13 @@ class MineGrid:
                     display.blit(text, text_boundaries)
 
                 pygame.draw.rect(display, colour_palette["white"],
-                                 [x*self._tile_size+self._offset[0], y*self._tile_size+self._offset[1], self._tile_size, self._tile_size])
+                                 [x*self._tile_size+self._offset[0], y*self._tile_size+self._offset[1], self._tile_size, self._tile_size], 2)
 
     def check_flags(self):
         win_check = 0
         for x in range(self._length):
             for y in range(self._height):
-                if self._grid_visual[x][y] == ("F") and self._grid_answer[x][y] == "X":
+                if self._grid_visual[x][y] == "F" and self._grid_answer[x][y] == "X":
                     win_check += 1
 
         if win_check == self._mine_count:
@@ -119,16 +133,28 @@ class MineGrid:
 
         return False
 
-    def reveal_zeroes(self, x: int, y: int):
-        for pos_x, pos_y in self._mine_position:
-            self._grid_visual[x+pos_x][y+pos_y] = self._grid_answer[x+pos_x][y+pos_y]
-            if self._grid_visual[x+pos_x][y+pos_y] == 0:
-                self.reveal_zeroes(x+pos_x, y+pos_y)
+    def collision(self, click_x: int, click_y: int):
+        if click_x < self._offset[0] or click_x > (self._offset[0] + (self._length * self._tile_size)):
+            return -1, -1
+        if click_y < self._offset[1] or click_y > (self._offset[1] + (self._height * self._tile_size)):
+            return -1, -1
 
-    @property
-    def grid_visual(self):
-        return self._grid_visual
+        for x in range(self._length):
+            for y in range(self._height):
+                if x*self._tile_size+self._offset[0] < click_x < (x+1)*self._tile_size+self._offset[0] \
+                        and y*self._tile_size+self._offset[1] < click_y < (y+1)*self._tile_size+self._offset[1]:
+                    return x, y
 
-    @property
-    def grid_answer(self):
-        return self._grid_answer
+    def reveal_square(self, square_x: int, square_y: int):
+        self._grid_visual[square_x][square_y] = self._grid_answer[square_x][square_y]
+
+        if self._grid_visual[square_x][square_y] == 0:
+            self._grid_visual, self._grid_answer = _reveal_zeroes(self._grid_visual, self._grid_answer,
+                                                                 self._mine_position, square_x, square_y)
+
+    def flag_square(self, square_x: int, square_y: int):
+        if self._grid_visual[square_x][square_y] == "#":
+            self._grid_visual[square_x][square_y] = "F"
+
+        elif self._grid_visual[square_x][square_y] == "F":
+            self._grid_visual[square_x][square_y] = "#"
